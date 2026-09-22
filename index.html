@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hora de praticar quantificadores em inglês!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --color-bg: #F2F6FC;
+    --color-surface: #FFFFFF;
+    --color-border: #D7E2F2;
+    --color-border-soft: #E6EDF8;
+    --color-text: #0B1220;
+    --color-text-muted: #4A5670;
+    --color-primary: #1554D8;
+    --color-primary-strong: #0A3AA8;
+    --color-accent-soft: #E6EEFC;
+    --color-wrong-soft: #EEF0F4;
+    --font-display: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: 'Space Grotesk', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-bg: #060B18;
+      --color-surface: #0F1A32;
+      --color-border: #223257;
+      --color-border-soft: #1A2745;
+      --color-text: #EAF0FC;
+      --color-text-muted: #9FB1D1;
+      --color-primary: #5C8DFF;
+      --color-primary-strong: #85A9FF;
+      --color-accent-soft: #16264A;
+      --color-wrong-soft: #14192A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #060B18;
+    --color-surface: #0F1A32;
+    --color-border: #223257;
+    --color-border-soft: #1A2745;
+    --color-text: #EAF0FC;
+    --color-text-muted: #9FB1D1;
+    --color-primary: #5C8DFF;
+    --color-primary-strong: #85A9FF;
+    --color-accent-soft: #16264A;
+    --color-wrong-soft: #14192A;
+  }
+
+  * { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  .bg-mesh {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+  @media (prefers-color-scheme: dark) { .bg-mesh { opacity: 0.35; } }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 56px) clamp(18px, 5vw, 28px) 72px;
+  }
+
+  header.hero {
+    text-align: left;
+    margin-bottom: clamp(28px, 5vw, 44px);
+  }
+
+  .hero-mark {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 4.4vw, 2.5rem);
+    line-height: 1.15;
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+  }
+
+  .hero-sub {
+    color: var(--color-text-muted);
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    max-width: 46ch;
+    margin: 0;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .hero-divider .line {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--color-border) 0 6px, transparent 6px 11px);
+  }
+
+  form#quiz {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  fieldset.question-card {
+    border: none;
+    margin: 0 0 30px;
+    padding: 22px 20px 20px 68px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    position: relative;
+    transition: border-color .25s ease, background-color .25s ease;
+  }
+
+  fieldset.question-card::after {
+    content: "";
+    position: absolute;
+    left: 33px;
+    top: 62px;
+    bottom: -30px;
+    width: 2px;
+    background: var(--color-border);
+    z-index: 0;
+  }
+  fieldset.question-card:last-of-type::after { display: none; }
+
+  .q-node {
+    position: absolute;
+    left: 16px;
+    top: 22px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    z-index: 1;
+    transition: all .25s ease;
+  }
+
+  legend.q-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.02rem;
+    padding: 0;
+    margin: 0 0 6px;
+    max-width: 42ch;
+  }
+
+  .q-translation {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 0.86rem;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+    max-width: 42ch;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .option:hover { background: var(--color-border-soft); }
+
+  .option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .option .badge {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    transition: all .15s ease;
+  }
+
+  .option input:checked + .badge {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .option:has(input:checked) {
+    background: var(--color-accent-soft);
+    border-color: var(--color-border);
+  }
+
+  .option .opt-text { font-size: 0.94rem; padding-top: 2px; }
+
+  .option input:focus-visible + .badge {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  fieldset.question-card.is-correct {
+    border-color: var(--color-primary);
+    background: var(--color-accent-soft);
+  }
+  fieldset.question-card.is-correct .q-node {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  fieldset.question-card.is-correct .option {
+    pointer-events: none;
+  }
+  fieldset.question-card.is-correct .option:not(:has(input:checked)) {
+    opacity: 0.45;
+  }
+
+  fieldset.question-card.is-wrong {
+    border-color: var(--color-text-muted);
+    background: var(--color-wrong-soft);
+    animation: nudge .32s ease;
+  }
+  fieldset.question-card.is-wrong .q-node {
+    border-color: var(--color-text);
+    color: var(--color-text);
+  }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  .q-status {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: var(--font-mono);
+  }
+  .is-correct .q-status.status-correct,
+  .is-wrong .q-status.status-wrong { display: flex; }
+  .status-correct { color: var(--color-primary); }
+  .status-wrong { color: var(--color-text-muted); }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  button.check-btn {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--color-primary);
+    border: none;
+    padding: 15px 34px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color .18s ease, transform .12s ease;
+  }
+  button.check-btn:hover { background: var(--color-primary-strong); }
+  button.check-btn:active { transform: scale(0.97); }
+  button.check-btn:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+  button.check-btn:disabled {
+    background: var(--color-border);
+    color: var(--color-text-muted);
+    cursor: default;
+  }
+
+  .result-banner {
+    margin-top: 30px;
+    padding: 24px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    text-align: center;
+  }
+  .result-banner.state-success {
+    border-color: var(--color-primary);
+    background: var(--color-accent-soft);
+  }
+  .result-icon { width: 40px; height: 40px; margin: 0 auto 12px; display: block; }
+  .result-score {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+  .result-message {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .result-sub {
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    margin: 10px 0 0;
+  }
+  .reset-link {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    cursor: pointer;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+    font-family: var(--font-body);
+    padding: 0;
+  }
+
+  footer.page-foot {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 480px) {
+    fieldset.question-card { padding-left: 58px; }
+    .q-node { width: 30px; height: 30px; left: 14px; top: 20px; font-size: 0.74rem; }
+    fieldset.question-card::after { left: 29px; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="bg-mesh" viewBox="0 0 400 800" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+  <g fill="var(--color-border)">
+    <circle cx="30" cy="40" r="4"/>
+    <circle cx="30" cy="56" r="4"/>
+    <circle cx="30" cy="72" r="4" fill-opacity="0.35"/>
+    <circle cx="30" cy="88" r="4" fill-opacity="0.35"/>
+
+    <circle cx="120" cy="140" r="4"/>
+    <circle cx="136" cy="140" r="4"/>
+    <circle cx="152" cy="140" r="4"/>
+    <circle cx="168" cy="140" r="4" fill-opacity="0.35"/>
+
+    <circle cx="300" cy="90" r="4" fill-opacity="0.35"/>
+    <circle cx="316" cy="90" r="4"/>
+
+    <circle cx="60" cy="230" r="4"/>
+    <circle cx="76" cy="230" r="4"/>
+    <circle cx="92" cy="230" r="4"/>
+    <circle cx="108" cy="230" r="4"/>
+  </g>
+</svg>
+
+<div class="page">
+
+  <header class="hero">
+    <svg class="hero-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="10" cy="24" r="6" fill="var(--color-primary)"/>
+      <circle cx="24" cy="24" r="6" fill="var(--color-primary)"/>
+      <circle cx="38" cy="24" r="6" stroke="var(--color-primary)" stroke-width="2"/>
+    </svg>
+    <h1>Hora de praticar quantificadores em inglês!</h1>
+    <p class="hero-sub">Responda as 14 questões sobre <em>some, all, every, both, each</em> e outros quantificadores. Você pode ajustar as respostas erradas e tentar quantas vezes precisar.</p>
+    <div class="hero-divider"><span>início</span><span class="line"></span><span>14 questões</span></div>
+  </header>
+
+  <form id="quiz">
+
+    <fieldset class="question-card" data-qid="1" data-correct="B">
+      <span class="q-node">01</span>
+      <legend class="q-text">___ the students passed the test.</legend>
+      <span class="q-translation">Todos os alunos passaram na prova.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q1" value="A"><span class="badge">A</span><span class="opt-text">Some</span></label>
+        <label class="option"><input type="radio" name="q1" value="B"><span class="badge">B</span><span class="opt-text">All</span></label>
+        <label class="option"><input type="radio" name="q1" value="C"><span class="badge">C</span><span class="opt-text">Few</span></label>
+        <label class="option"><input type="radio" name="q1" value="D"><span class="badge">D</span><span class="opt-text">Any</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="2" data-correct="A">
+      <span class="q-node">02</span>
+      <legend class="q-text">___ movies were boring.</legend>
+      <span class="q-translation">Ambos os filmes foram chatos.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q2" value="A"><span class="badge">A</span><span class="opt-text">Both</span></label>
+        <label class="option"><input type="radio" name="q2" value="B"><span class="badge">B</span><span class="opt-text">Some</span></label>
+        <label class="option"><input type="radio" name="q2" value="C"><span class="badge">C</span><span class="opt-text">Any</span></label>
+        <label class="option"><input type="radio" name="q2" value="D"><span class="badge">D</span><span class="opt-text">None</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="3" data-correct="C">
+      <span class="q-node">03</span>
+      <legend class="q-text">___ house on the street is blue.</legend>
+      <span class="q-translation">Cada casa na rua é azul.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q3" value="A"><span class="badge">A</span><span class="opt-text">Some</span></label>
+        <label class="option"><input type="radio" name="q3" value="B"><span class="badge">B</span><span class="opt-text">Few</span></label>
+        <label class="option"><input type="radio" name="q3" value="C"><span class="badge">C</span><span class="opt-text">Every</span></label>
+        <label class="option"><input type="radio" name="q3" value="D"><span class="badge">D</span><span class="opt-text">Both</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="4" data-correct="D">
+      <span class="q-node">04</span>
+      <legend class="q-text">I bought ___ apples.</legend>
+      <span class="q-translation">Eu comprei algumas maçãs.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q4" value="A"><span class="badge">A</span><span class="opt-text">Every</span></label>
+        <label class="option"><input type="radio" name="q4" value="B"><span class="badge">B</span><span class="opt-text">Both</span></label>
+        <label class="option"><input type="radio" name="q4" value="C"><span class="badge">C</span><span class="opt-text">None</span></label>
+        <label class="option"><input type="radio" name="q4" value="D"><span class="badge">D</span><span class="opt-text">Some</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="5" data-correct="A">
+      <span class="q-node">05</span>
+      <legend class="q-text">___ people came to the party.</legend>
+      <span class="q-translation">Muitas pessoas vieram à festa.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q5" value="A"><span class="badge">A</span><span class="opt-text">Many</span></label>
+        <label class="option"><input type="radio" name="q5" value="B"><span class="badge">B</span><span class="opt-text">A bit of</span></label>
+        <label class="option"><input type="radio" name="q5" value="C"><span class="badge">C</span><span class="opt-text">Each</span></label>
+        <label class="option"><input type="radio" name="q5" value="D"><span class="badge">D</span><span class="opt-text">None</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="6" data-correct="B">
+      <span class="q-node">06</span>
+      <legend class="q-text">There are ___ books on the shelf.</legend>
+      <span class="q-translation">Há poucos livros na estante.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q6" value="A"><span class="badge">A</span><span class="opt-text">Every</span></label>
+        <label class="option"><input type="radio" name="q6" value="B"><span class="badge">B</span><span class="opt-text">Few</span></label>
+        <label class="option"><input type="radio" name="q6" value="C"><span class="badge">C</span><span class="opt-text">All</span></label>
+        <label class="option"><input type="radio" name="q6" value="D"><span class="badge">D</span><span class="opt-text">Both</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="7" data-correct="C">
+      <span class="q-node">07</span>
+      <legend class="q-text">___ students joined the club.</legend>
+      <span class="q-translation">Vários alunos entraram no clube.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q7" value="A"><span class="badge">A</span><span class="opt-text">Each</span></label>
+        <label class="option"><input type="radio" name="q7" value="B"><span class="badge">B</span><span class="opt-text">None</span></label>
+        <label class="option"><input type="radio" name="q7" value="C"><span class="badge">C</span><span class="opt-text">Several</span></label>
+        <label class="option"><input type="radio" name="q7" value="D"><span class="badge">D</span><span class="opt-text">A bit of</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="8" data-correct="D">
+      <span class="q-node">08</span>
+      <legend class="q-text">Do you have ___ questions?</legend>
+      <span class="q-translation">Você tem alguma pergunta?</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q8" value="A"><span class="badge">A</span><span class="opt-text">Every</span></label>
+        <label class="option"><input type="radio" name="q8" value="B"><span class="badge">B</span><span class="opt-text">Both</span></label>
+        <label class="option"><input type="radio" name="q8" value="C"><span class="badge">C</span><span class="opt-text">None</span></label>
+        <label class="option"><input type="radio" name="q8" value="D"><span class="badge">D</span><span class="opt-text">Any</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="9" data-correct="A">
+      <span class="q-node">09</span>
+      <legend class="q-text">___ of the cookies were left.</legend>
+      <span class="q-translation">Nenhum dos biscoitos sobrou.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q9" value="A"><span class="badge">A</span><span class="opt-text">None</span></label>
+        <label class="option"><input type="radio" name="q9" value="B"><span class="badge">B</span><span class="opt-text">Some</span></label>
+        <label class="option"><input type="radio" name="q9" value="C"><span class="badge">C</span><span class="opt-text">Both</span></label>
+        <label class="option"><input type="radio" name="q9" value="D"><span class="badge">D</span><span class="opt-text">Each</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="10" data-correct="B">
+      <span class="q-node">10</span>
+      <legend class="q-text">___ student received a certificate.</legend>
+      <span class="q-translation">Cada aluno recebeu um certificado.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q10" value="A"><span class="badge">A</span><span class="opt-text">Some</span></label>
+        <label class="option"><input type="radio" name="q10" value="B"><span class="badge">B</span><span class="opt-text">Each</span></label>
+        <label class="option"><input type="radio" name="q10" value="C"><span class="badge">C</span><span class="opt-text">Few</span></label>
+        <label class="option"><input type="radio" name="q10" value="D"><span class="badge">D</span><span class="opt-text">Any</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="11" data-correct="C">
+      <span class="q-node">11</span>
+      <legend class="q-text">___ the cake is left.</legend>
+      <span class="q-translation">Um pouco do bolo sobrou.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q11" value="A"><span class="badge">A</span><span class="opt-text">Each</span></label>
+        <label class="option"><input type="radio" name="q11" value="B"><span class="badge">B</span><span class="opt-text">Both</span></label>
+        <label class="option"><input type="radio" name="q11" value="C"><span class="badge">C</span><span class="opt-text">Some of</span></label>
+        <label class="option"><input type="radio" name="q11" value="D"><span class="badge">D</span><span class="opt-text">Every</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="12" data-correct="B">
+      <span class="q-node">12</span>
+      <legend class="q-text">___ the work is done.</legend>
+      <span class="q-translation">A maior parte do trabalho está pronta.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q12" value="A"><span class="badge">A</span><span class="opt-text">Few</span></label>
+        <label class="option"><input type="radio" name="q12" value="B"><span class="badge">B</span><span class="opt-text">Most of</span></label>
+        <label class="option"><input type="radio" name="q12" value="C"><span class="badge">C</span><span class="opt-text">Any</span></label>
+        <label class="option"><input type="radio" name="q12" value="D"><span class="badge">D</span><span class="opt-text">None</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="13" data-correct="A">
+      <span class="q-node">13</span>
+      <legend class="q-text">___ people came to the event.</legend>
+      <span class="q-translation">Muitas pessoas vieram ao evento.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q13" value="A"><span class="badge">A</span><span class="opt-text">A lot of</span></label>
+        <label class="option"><input type="radio" name="q13" value="B"><span class="badge">B</span><span class="opt-text">Each</span></label>
+        <label class="option"><input type="radio" name="q13" value="C"><span class="badge">C</span><span class="opt-text">None</span></label>
+        <label class="option"><input type="radio" name="q13" value="D"><span class="badge">D</span><span class="opt-text">Both</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <fieldset class="question-card" data-qid="14" data-correct="C">
+      <span class="q-node">14</span>
+      <legend class="q-text">I need ___ help.</legend>
+      <span class="q-translation">Preciso de um pouco de ajuda.</span>
+      <div class="options">
+        <label class="option"><input type="radio" name="q14" value="A"><span class="badge">A</span><span class="opt-text">Every</span></label>
+        <label class="option"><input type="radio" name="q14" value="B"><span class="badge">B</span><span class="opt-text">Many</span></label>
+        <label class="option"><input type="radio" name="q14" value="C"><span class="badge">C</span><span class="opt-text">A bit of</span></label>
+        <label class="option"><input type="radio" name="q14" value="D"><span class="badge">D</span><span class="opt-text">Few</span></label>
+      </div>
+      <p class="q-status status-correct">✓ você acertou</p>
+      <p class="q-status status-wrong">✕ não foi dessa vez</p>
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" class="check-btn" id="checkBtn">Verificar respostas</button>
+    </div>
+  </form>
+
+  <div class="result-banner" id="resultBanner" hidden>
+    <svg class="result-icon" id="resultIcon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+    <p class="result-score" id="resultScore"></p>
+    <p class="result-message" id="resultMessage"></p>
+    <p class="result-sub" id="resultSub"></p>
+    <button type="button" class="reset-link" id="resetLink" hidden>Refazer o quiz do zero</button>
+  </div>
+
+  <footer class="page-foot">some → most → all</footer>
+</div>
+
+<script>
+(function () {
+  const form = document.getElementById('quiz');
+  const checkBtn = document.getElementById('checkBtn');
+  const banner = document.getElementById('resultBanner');
+  const resultScore = document.getElementById('resultScore');
+  const resultMessage = document.getElementById('resultMessage');
+  const resultSub = document.getElementById('resultSub');
+  const resultIcon = document.getElementById('resultIcon');
+  const resetLink = document.getElementById('resetLink');
+  const cards = Array.from(form.querySelectorAll('.question-card'));
+  const total = cards.length;
+
+  let attempts = 0;
+  let lockedCorrect = new Set();
+
+  const ICON_CHECK = '<circle cx="24" cy="24" r="21" stroke="var(--color-primary)" stroke-width="2"/><path d="M15 24.5L21 30.5L33 17.5" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  const ICON_ALL = '<circle cx="14" cy="24" r="6" fill="var(--color-primary)"/><circle cx="24" cy="24" r="6" fill="var(--color-primary)"/><circle cx="34" cy="24" r="6" fill="var(--color-primary)"/>';
+
+  const encouragements = [
+    'Quase lá! Reveja as questões marcadas e tente de novo.',
+    'Cada erro é uma chance de aprender algo novo — vamos de novo?',
+    'Você está no caminho certo. Ajuste as respostas destacadas e siga em frente.',
+    'Continue! Revise os pontos marcados e tente outra vez.',
+    'Bom progresso. Corrija o que faltou e mande outra tentativa.'
+  ];
+
+  function getSelected(qid) {
+    const input = form.querySelector('input[name="q' + qid + '"]:checked');
+    return input ? input.value : null;
+  }
+
+  function markCard(card, isCorrect) {
+    card.classList.remove('is-correct', 'is-wrong');
+    void card.offsetWidth;
+    if (isCorrect) {
+      card.classList.add('is-correct');
+      const qid = card.dataset.qid;
+      lockedCorrect.add(qid);
+      const node = card.querySelector('.q-node');
+      node.textContent = '✓';
+      form.querySelectorAll('input[name="q' + qid + '"]').forEach(i => i.disabled = true);
+    } else {
+      card.classList.add('is-wrong');
+    }
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    attempts += 1;
+
+    let correctCount = 0;
+
+    cards.forEach(card => {
+      const qid = card.dataset.qid;
+      if (lockedCorrect.has(qid)) {
+        correctCount += 1;
+        return;
+      }
+      const answer = getSelected(qid);
+      const correct = card.dataset.correct;
+      const isCorrect = answer !== null && answer === correct;
+      markCard(card, isCorrect);
+      if (isCorrect) correctCount += 1;
+    });
+
+    banner.hidden = false;
+    banner.classList.remove('state-success');
+    resultSub.textContent = '';
+    resetLink.hidden = true;
+
+    if (correctCount === total) {
+      banner.classList.add('state-success');
+      resultIcon.innerHTML = ICON_ALL;
+      resultScore.textContent = total + ' de ' + total + ' corretas';
+      resultMessage.textContent = 'Parabéns! Você concluiu o quiz.';
+      const tentativaWord = attempts === 1 ? 'tentativa' : 'tentativas';
+      resultSub.textContent = 'Você precisou de ' + attempts + ' ' + tentativaWord + ' para acertar tudo.';
+      checkBtn.disabled = true;
+      resetLink.hidden = false;
+    } else {
+      resultIcon.innerHTML = ICON_CHECK.replace(/var\(--color-primary\)/g, 'var(--color-text-muted)');
+      resultScore.textContent = correctCount + ' de ' + total + ' corretas · tentativa ' + attempts;
+      const phrase = encouragements[(attempts - 1) % encouragements.length];
+      resultMessage.textContent = phrase;
+    }
+
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  resetLink.addEventListener('click', function () {
+    attempts = 0;
+    lockedCorrect = new Set();
+    checkBtn.disabled = false;
+    banner.hidden = true;
+    cards.forEach(card => {
+      card.classList.remove('is-correct', 'is-wrong');
+      card.querySelector('.q-node').textContent = card.dataset.qid.padStart(2, '0');
+      form.querySelectorAll('input[name="q' + card.dataset.qid + '"]').forEach(i => {
+        i.disabled = false;
+        i.checked = false;
+      });
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
